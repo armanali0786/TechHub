@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const dotenv  = require ("dotenv");
 const router = require('./routes')
 const cors = require('cors');
+const multer = require('multer');
 
 const app = express();
 app.use(cors())
@@ -13,6 +14,31 @@ dotenv.config();
 
 
 app.use(express.static(__dirname + '/public'));
+
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "uploads/")
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + "-" + file.originalname)
+//   },
+// })
+
+// const uploadStorage = multer({ storage: storage })
+
+// // Single file
+// app.post("/upload/single", uploadStorage.single("file"), (req, res) => {
+//   console.log(req.file)
+//   return res.send("Single file")
+// })
+
+//Multiple files
+// app.post("/upload/multiple", uploadStorage.array("file", 10), (req, res) => {
+//   console.log(req.files)
+//   return res.send("Multiple files")
+// })
+
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true, 

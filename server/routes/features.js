@@ -5,13 +5,13 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    const questions = await FeatureList.find({})
+    const features = await FeatureList.find({})
 
     res.send({
       status: 'success',
-      results: questions.length,
+      results: features.length,
       data: {
-        questions
+        features
       }
     })
   } catch (error) {
@@ -25,14 +25,12 @@ router.get('/', async (req, res) => {
 // ****************************
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
-  
     try {
-      const newQuestion = await FeatureList.create(req.body)
+      const newFeature = await FeatureList.create(req.body)
       res.status(201).json({
         status: 'success',
         data: {
-          question: newQuestion
+          feature: newFeature
         }
       })
     } catch (error) {
