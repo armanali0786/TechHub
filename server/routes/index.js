@@ -5,6 +5,7 @@ const features = require('./features')
 const cardlists = require('./cardList')
 const sliding = require('./sliding')
 const register = require('./register')
+const login = require('./login')
 
 router.use('/questions', questions)
 
@@ -15,6 +16,8 @@ router.use('/cardlists', cardlists)
 router.use('/sliding', sliding)
 
 router.use('/register', register)
+
+router.use('/login', login)
 
 
 
