@@ -1,13 +1,12 @@
 const express = require('express')
-const router = express.Router()
+const router = require('express').Router();
+
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const slidingController = require('../controller/Sliding')
-
 // Create uploads directory if it doesn't exist
-const uploadsDirectory = path.join(__dirname, '../public/slidingImages');
+const uploadsDirectory = path.join(__dirname, '../public/assets');
 if (!fs.existsSync(uploadsDirectory)) {
     fs.mkdirSync(uploadsDirectory);
 }
@@ -27,9 +26,13 @@ const upload = multer({ storage: storage });
 
 // Serve static files from the public directory
 router.use(express.static(path.join(__dirname, '../public')));
+const CourseListController = require('../controller/courseList');
 
-router.get('/sliding', slidingController.getSliding)
+router.post('/courseList', upload.single('image'), CourseListController.postCourseList);
 
-router.post('/sliding', upload.single('image'), slidingController.postSliding)
+router.get('/courseLists', CourseListController.getCourseLists);
 
-module.exports = router
+
+module.exports = router;
+
+

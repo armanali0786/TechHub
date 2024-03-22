@@ -1,17 +1,17 @@
 const express = require('express')
-const Questions = require('../models/Questions')
+const Quiz = require('../models/Quiz')
 const FeatureList = require('../models/FeatureList')
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+exports.getQuiz =  async (req, res) => {
   try {
-    const questions = await Questions.find({})
+    const quiz = await Quiz.find({})
 
     res.send({
       status: 'success',
-      results: questions.length,
+      results: quiz.length,
       data: {
-        questions
+        quiz
       }
     })
   } catch (error) {
@@ -20,36 +20,16 @@ router.get('/', async (req, res) => {
       message: error
     })
   }
-})
+};
 
-router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params
-    const question = await Questions.findOne({ _id: id })
-
-    res.send({
-      status: 'success',
-      data: {
-        question
-      }
-    })
-  } catch (error) {
-    res.send({
-      status: 'fail',
-      message: error
-    })
-  }
-})
-
-router.post('/', async (req, res) => {
+exports.postQuiz = async (req, res) => {
   console.log(req.body);
-
   try {
-    const newQuestion = await Questions.create(req.body)
+    const newQuiz = await Quiz.create(req.body)
     res.status(201).json({
       status: 'success',
       data: {
-        question: newQuestion
+        quiz: newQuiz
       }
     })
   } catch (error) {
@@ -58,21 +38,17 @@ router.post('/', async (req, res) => {
       message: error
     })
   }
-})
+};
 
-
-
-router.patch('/:id', async (req, res) => {
-  const { id } = req.params
+exports.getQuizById = async (req, res) => {
   try {
-    const updateQuestion = await Questions.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true
-    })
+    const { id } = req.params
+    const quiz = await Quiz.findOne({ _id: id })
+
     res.send({
       status: 'success',
       data: {
-        question: updateQuestion
+        quiz
       }
     })
   } catch (error) {
@@ -81,12 +57,35 @@ router.patch('/:id', async (req, res) => {
       message: error
     })
   }
-})
+};
 
-router.delete('/:id', async (req, res) => {
+
+
+exports.patchQuiz =  async (req, res) => {
   const { id } = req.params
   try {
-    await Questions.findByIdAndDelete(id)
+    const updateQuiz = await Quiz.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true
+    })
+    res.send({
+      status: 'success',
+      data: {
+        quiz: updateQuiz
+      }
+    })
+  } catch (error) {
+    res.send({
+      status: 'fail',
+      message: error
+    })
+  }
+};
+
+exports.deleteQuiz = async (req, res) => {
+  const { id } = req.params
+  try {
+    await Quiz.findByIdAndDelete(id)
 
     res.send({
       status: 'success',
@@ -98,10 +97,6 @@ router.delete('/:id', async (req, res) => {
       message: error
     })
   }
-})
+};
 
 
-
-
-
-module.exports = router
